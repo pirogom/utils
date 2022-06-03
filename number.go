@@ -5,7 +5,7 @@ import "strconv"
 /**
 *	atoi
 **/
-func atoi(str string) int {
+func Atoi(str string) int {
 	num, err := strconv.Atoi(str)
 
 	if err != nil {
