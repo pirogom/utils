@@ -1,8 +1,10 @@
 package utils
 
 import (
+	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 )
 
 var (
@@ -36,4 +38,43 @@ func GetHttpData(url string) ([]byte, error) {
 	}
 
 	return buf, nil
+}
+
+/**
+* HTTP 파일 다운로드
+**/
+func DownloadFile(filepath string, url string) error {
+	out, err := os.Create(filepath)
+	if err != nil {
+		return err
+	}
+	defer out.Close()
+
+	// Request 객체 생성
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return err
+	}
+
+	//필요시 헤더 추가 가능
+	req.Header.Add("user-agent", UserAgentValue)
+
+	// Client객체에서 Request 실행
+	client := &http.Client{}
+	rep, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+
+	defer func() {
+		rep.Body.Close()
+	}()
+
+	// Write the body to file
+	_, err = io.Copy(out, rep.Body)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
