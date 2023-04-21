@@ -8,8 +8,12 @@ import (
 )
 
 var (
-	UserAgentValue = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"
+	userAgentValue = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36"
 )
+
+func ChangeUserAgent(ua string) {
+	userAgentValue = ua
+}
 
 /**
 *	GetHttpData
@@ -20,7 +24,7 @@ func GetHttpData(url string) ([]byte, error) {
 		return nil, err
 	}
 
-	req.Header.Add("user-agent", UserAgentValue)
+	req.Header.Add("user-agent", userAgentValue)
 
 	client := &http.Client{}
 	rep, err := client.Do(req)
